@@ -1,0 +1,44 @@
+{
+  "name": "threejs-boilerplate-vite",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build ",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnansai/threeJs-boilerPlate-vite.git"
+  },
+  "author": "Archana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gnansai/threeJs-boilerPlate-vite/issues"
+  },
+  "homepage": "https://github.com/gnansai/threeJs-boilerPlate-vite#readme",
+  "devDependencies": {
+    "@types/dat.gui": "^0.7.7",
+    "dat.gui": "^0.7.9",
+    "vite": "^4.0.4",
+    "vite-plugin-mkcert": "^1.10.1"
+  },
+  "dependencies": {
+    "eruda": "^2.11.2",
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "gltfpack": "^0.19.1",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
+    "postprocessing": "^6.30.2",
+    "process": "^0.11.10",
+    "spectorjs": "^0.9.29",
+    "three": "^0.148.0",
+    "three-gltf-extensions": "^0.0.15",
+    "url": "^0.11.0",
+    "use-spinner": "^0.2.0",
+    "util": "^0.12.5",
+    "xstate": "^4.37.0"
+  }
+}
