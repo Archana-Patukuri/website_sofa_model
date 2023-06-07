@@ -1,0 +1,1 @@
+export default(e,t={})=>{let{container:n}=t;return n||(n="body"),"string"==typeof n&&(n=document.querySelector(n)),async(...t)=>{const r=(e=>{const t=document.createElement("div");t.classList.add("us-container");const n=document.createElement("div");return n.classList.add("us-spinner"),t.appendChild(n),e.appendChild(t),t})(n),d=await e(...t);var a;return a=r,n.removeChild(a),d}};
