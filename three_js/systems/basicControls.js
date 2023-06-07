@@ -9,7 +9,7 @@ function basicControls(scene,camera,controls,renderer) {
   controls.enablePan=true;
   controls.enableRotate=true;
   
-  // controls.minPolarAngle=controls.maxPolarAngle=1
+   controls.minPolarAngle=controls.maxPolarAngle=1
 
   controls.listenToKeyEvents( window );  
 

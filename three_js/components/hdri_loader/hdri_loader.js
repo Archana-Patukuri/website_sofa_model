@@ -11,7 +11,7 @@ async function hdriLoad() {
 
   const [background1, hdri1] = await Promise.all([
     textureLoader.loadAsync("lythwood_room_1k.jpg"),
-    hdriLoader.loadAsync("lythwood_room_1k.hdr"),
+    hdriLoader.loadAsync("cyclorama_hard_light_1k.hdr"),
   ]);
 
   background1.encoding = sRGBEncoding;

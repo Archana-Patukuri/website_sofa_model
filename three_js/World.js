@@ -4,6 +4,7 @@ import { createCameraControls } from "./systems/cameraControls.js";
 import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { basicControls } from "./systems/basicControls.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { hdriLoad } from "./components/hdri_loader/hdri_loader.js";
 import { Debug } from "./systems/Debug.js";
@@ -55,8 +56,7 @@ let selectableObjects = [];
 
 let box, boxhelper, model;
 
-let UIContainer;
-let delta;
+let delta,gui;
 
 let mobile = false;
 if (/Android|iPhone/i.test(navigator.userAgent)) {
@@ -67,8 +67,7 @@ if (/Android|iPhone/i.test(navigator.userAgent)) {
 class World {
   constructor() {     
     // camera.layers.enable(1);
-    this.container = container;
-    UIContainer = container;   
+    this.container = container;    
 
     scene = createScene();
     renderer = createRenderer();
@@ -111,17 +110,17 @@ class World {
   async loadBackground() {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
     scene.environment = hdri1;  
-    scene.background=new THREE.Color(0.5,0.5,0.5); 
+    //scene.background=new THREE.Color(0.5,0.5,0.5);     
+    scene.background=background0
     //scene.environment.position.set(1,0,0)
     //scene.environment.center.x=-10
     let ambientLightSun = new AmbientLight();
     ambientLightSun.color = new THREE.Color(0xffffff);
     ambientLightSun.intensity = 2;
-    scene.add(ambientLightSun);
-    console.log(scene.environment.center)
+    scene.add(ambientLightSun);    
   } 
   //LoadRoom
-  async loadRoomGLTF() {
+  async loadGLTF() {
     delta = clock.getDelta();    
     let { gltfData } = await gltfLoad(assets.Room[0].URL,renderer);
     let loadedmodel = gltfData.scene;        
@@ -131,40 +130,56 @@ class World {
     Point_Light.intensity=10; 
     Point_Light.castShadow=true;
                        
-    scene.traverse(function (child) {              
-      if (child.isMesh ) {
-        if(child.name=="Plane"){
-          child.material.color=new THREE.Color(0.3,0.3,0.3)          
-        }
-        
-        if(child.name=="Plane" || child.name=="Plane_1" ){
-          child.castShadow = false;
-          child.receiveShadow = true; 
-          child.material.transparent=true  
-          child.material.opacity=0.7;          
-        }else{
-        child.castShadow = true; 
-        child.receiveShadow = true;                
-        }                           
-      }          
-  })
+    Point_Light.shadow.mapSize.width = 2048; 
+    Point_Light.shadow.mapSize.height = 2048;
+     /*Point_Light.shadow.camera.near = 0.1; 
+    Point_Light.shadow.camera.far = 1000; */   
+  
+  if(gui)gui.destroy()                 
+  gui = new GUI();  
+  gui.add( gltfData, 'Material Variants', {
+    'Red': 0,
+    'Green': 1,
+    'Black': 2,    
+  } ).onChange( function ( value ) {
+    let i= parseInt( value );
+    gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );             
+  } );
+   
+   gui.add( Point_Light, 'Light', {
+    'On': 10,
+    'Off': 0,       
+  } ).onChange( function ( value ) {    
+    Point_Light.intensity=parseInt( value );
+  } ); 
+
+  console.log(gltfData)  
+
     renderer.render(scene, camera);           
   }    
 //CreatePostProcess Effects
   createPostProcess() {   
-    console.log(scene.children)    
+    scene.traverse(function (child) {              
+      if (child.isMesh ) {        
+        if(child.name=="Plane" || child.name=="Plane_1" ){
+          child.castShadow = false;
+          child.receiveShadow = true;                  
+        }else{
+        child.castShadow = true; 
+        child.receiveShadow = true;                
+        }                                      
+      }          
+  })
+       
     const renderPass = new RenderPass(scene, camera);        
     composer.addPass(renderPass);                
-
-    let groundReflector,ssrPass,geometry,selects
-         
+  //SSR
+        let groundReflector,ssrPass,geometry,selects         
           const params = {
             enableSSR: true,      
             groundReflector: true,
-          };          
-          
-          geometry = new THREE.PlaneGeometry( 3.88, 3.88 );
-
+          };                    
+            geometry = new THREE.PlaneGeometry( 3, 3);
             groundReflector = new ReflectorForSSRPass( geometry, {
               clipBias: 0.0003,
               textureWidth: window.innerWidth,
@@ -173,19 +188,13 @@ class World {
               useDepthTexture: true,
             } );
             groundReflector.material.depthWrite = false;
-            groundReflector.rotation.x = - Math.PI / 2;
-            groundReflector.position.y = -0.01;
-            groundReflector.position.z=0.43;
-            groundReflector.position.x=0.08; 
-
-            //groundReflector.visible = true;
-           
+            groundReflector.rotation.x = - Math.PI / 2;            
+            groundReflector.position.z=0.25;
+            groundReflector.position.x=0.5;                        
          
-          //  let Floor = scene.getObjectByName('Plane_1');  
-           // Floor.material.opacity=0.7;   
-       //Floor.material.transparent=true; 
-            scene.add( groundReflector );
-      
+           let Floor = scene.getObjectByName('Plane_1');  
+           Floor.material.opacity=0.7;   
+           Floor.material.transparent=true;                   
             ssrPass = new SSRPass( {
               renderer,
               scene,
@@ -195,22 +204,10 @@ class World {
               groundReflector: params.groundReflector ? groundReflector : null,
               selects: params.groundReflector ? selects : null
             } );
-      
-            composer.addPass( ssrPass );
-                           
-                ssrPass.groundReflector = groundReflector,
-                ssrPass.selects = selects;
-                        
-                ssrPass.groundReflector = null,
-                ssrPass.selects = null;
-                            
-            ssrPass.thickness = 0.018;           
-            ssrPass.opacity = 1;
-            groundReflector.opacity = ssrPass.opacity;                              
-
-          console.log(composer)
-       
-     //GammaCorrectionShader for the Colour fixing
+                                                      
+                composer.addPass( ssrPass );
+                scene.add( groundReflector ); 
+     
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
        
