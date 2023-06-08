@@ -89,8 +89,7 @@ class World {
   //LoadRoom
   async loadGLTF() {     
     let { gltfData } = await gltfLoad(assets.Room[0].URL,renderer);
-    let loadedmodel = gltfData.scene;        
-    console.log(gltfData)   
+    let loadedmodel = gltfData.scene;             
     scene.add(loadedmodel)          
     let Point_Light=scene.getObjectByName("Point_Light");
     Point_Light.intensity=10; 
@@ -99,39 +98,13 @@ class World {
     Point_Light.shadow.mapSize.width = 2048; 
     Point_Light.shadow.mapSize.height = 2048;
     Point_Light.shadow.camera.near = 0.1; 
-    Point_Light.shadow.camera.far = 1000;     
-    console.log(Point_Light)
+    Point_Light.shadow.camera.far = 1000;         
 
      mixer = new AnimationMixer(loadedmodel);  
 
   if(gui)gui.destroy()                 
-  gui = new GUI();  
-  gui.add( gltfData, 'Material Variants', {
-    'Red': 0,
-    'Green': 1,
-    'Blue': 2,    
-  } ).onChange( function ( value ) {
-    let i= parseInt( value );
-    gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );   
-    console.log(gltfData.scene)          
-  } );
-
-  gui.add( gltfData, 'Animations', {
-    'Recline': 0,
-    'Normal': 1,    
-  } ).onChange( function ( value ) {
-    let i= parseInt( value );    
-    console.log(gltfData.animations)
-    animationClips[i] = mixer.clipAction(gltfData.animations[i]);
-    animationClips[i].setLoop(LoopOnce);
-    animationClips[i].blendMode = 1;
-    animationClips[i].clampWhenFinished = true;    
-    
-    mixer.stopAllAction();
-    animationClips[i].play(); 
-  } );
-   
-   gui.add( Point_Light, 'Light', {
+  gui = new GUI(); 
+  gui.add( Point_Light, 'Light', {
     'On': 10,
     'Off': 0,       
   } ).onChange( function ( value ) {    
@@ -141,10 +114,34 @@ class World {
     }else{
       renderer.toneMappingExposure = 2;      
     }   
-  } ); 
+  } );  
+  
+  gui.add( gltfData, 'Animations', {
+    'Recline': 0,
+    'Normal': 1,    
+  } ).onChange( function ( value ) {
+    let i= parseInt( value );        
+    animationClips[i] = mixer.clipAction(gltfData.animations[i]);
+    animationClips[i].setLoop(LoopOnce);
+    animationClips[i].blendMode = 1;
+    animationClips[i].clampWhenFinished = true;        
+    mixer.stopAllAction();
+    animationClips[i].play(); 
+  } );
+
+  gui.add( gltfData, 'Material Variants', {
+    'Red': 0,
+    'Green': 1,
+    'Blue': 2,    
+  } ).onChange( function ( value ) {
+    let i= parseInt( value );
+    gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );              
+  } );
+
+   
+  
   gui.close();  
- //SSS
- console.log(scene)
+ //SSS 
  if(Point_Light.intensity>0){    
   let LampTop = scene.getObjectByName("Mesh0080_6");
   let texLoader = new TextureLoader();
@@ -250,9 +247,7 @@ class World {
       const delta = clock.getDelta();       
      if(mixer) mixer.update(delta)
       //DEBUG      
-      debug.update(renderer);
-                    
-      //console.log(localStorage)
+      debug.update(renderer);                          
     });  
        
     //Spinner Remove after starting to render the scene

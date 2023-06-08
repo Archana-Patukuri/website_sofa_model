@@ -1,8 +1,4 @@
 import {MOUSE} from "three";
-import useSpinner from '../../use-spinner';
-import '../../use-spinner/assets/use-spinner.css';
-let container_3d=document.getElementById("3dcontainer");
-
 function basicControls(scene,camera,controls,renderer) {  
 
   controls.enableZoom = true;

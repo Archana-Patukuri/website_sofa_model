@@ -1,18 +1,9 @@
 import { GridHelper, AxesHelper, Group } from "three";
 import Stats from "../../node_modules/three/examples/jsm/libs/stats.module.js";
 import { GUI } from "../../node_modules/three/examples/jsm/libs/lil-gui.module.min.js"
-import useSpinner from '../../use-spinner';
-import '../../use-spinner/assets/use-spinner.css';
-let container_3d=document.getElementById("3dcontainer");
 let stats,
   gui,
-  pixelRatio,
-  drawCalls,
-  guiStatsEl,
-  width,
-  height,
-  memory,
-  visibleTriangles;    
+  guiStatsEl;    
 class Debug {
   createHelpers(scene) {
     const axexHelper = new AxesHelper(5);
@@ -59,18 +50,7 @@ class Debug {
   update(renderer) {
     //UPDATE
     stats.update();
-    //   drawCalls = renderer.info.render.calls;
-    //   visibleTriangles = renderer.info.render.triangles;
-
-    //   width = window.screen.availWidth;
-    //   height = window.screen.availHeight;
-
-    //   guiStatsEl.innerHTML = [
-    //     "<i>draw calls</i>: " + drawCalls,
-    //     "<i>device pixel ratio</i>: " + pixelRatio,
-    //     "<i>resolution</i>: " + width + "x" + height,
-    //     "<i>visible triangles</i>: " + visibleTriangles,
-    //   ].join("<br/>");
+  
   }
 }
 
