@@ -128,7 +128,6 @@ class World {
     mixer.stopAllAction();
     animationClips[i].play(); 
   } );
-
   gui.add( gltfData, 'Material Variants', {
     'Red': 0,
     'Green': 1,
