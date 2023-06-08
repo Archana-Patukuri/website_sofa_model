@@ -5,37 +5,29 @@ import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { basicControls } from "./systems/basicControls.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-
+import { gltfLoad } from "./components/gltf_loader/gltfLoad.js";
 import { hdriLoad } from "./components/hdri_loader/hdri_loader.js";
 import { Debug } from "./systems/Debug.js";
 import {
-  Box3,
-  Box3Helper, 
   Clock,
-  Group, 
   Vector3,
   AmbientLight ,
   RepeatWrapping,
   ShaderMaterial,
   TextureLoader,
-  UniformsUtils,  
+  UniformsUtils, 
+  AnimationMixer,
+  LoopOnce
 } from "three";
 import * as THREE from 'three';
 import { createEffectComposer } from "./systems/effectComposer.js";
-
 import { GammaCorrectionShader } from '../node_modules/three/examples/jsm/shaders/GammaCorrectionShader.js'; 
 import { RenderPass } from '../node_modules/three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from '../node_modules/three/examples/jsm/postprocessing/ShaderPass.js';
 import { SubsurfaceScatteringShader } from "three/examples/jsm/shaders/SubsurfaceScatteringShader.js";
-
 import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
 import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
-
-import { gltfLoad } from "./components/gltf_loader/gltfLoad.js";
-
 import assets from "./dataBase/assets.json" assert { type: "json" };
-
-import { TWEEN } from "three/examples/jsm/libs/tween.module.min.js";
 
 const container = document.querySelector("#scene-container");
 
@@ -47,9 +39,9 @@ let debug;
 let clock;
 let composer;
 let ambientLightSun;
-let box, boxhelper, model;
 
 let delta,gui;
+let animationClips = [],mixer;
 
 let mobile = false;
 if (/Android|iPhone/i.test(navigator.userAgent)) {
@@ -58,8 +50,7 @@ if (/Android|iPhone/i.test(navigator.userAgent)) {
 
    
 class World {
-  constructor() {     
-    // camera.layers.enable(1);
+  constructor() {         
     this.container = container;    
 
     scene = createScene();
@@ -68,18 +59,10 @@ class World {
     composer = createEffectComposer(renderer);          
 
     camera = createCamera(); 
-    scene.add(camera);                   
-      
-    box = new Box3();
-    boxhelper = new Box3Helper(box, 0xffff00);
- 
+    scene.add(camera);                             
 
-    clock = new Clock();
-    //Parent Object where the loaded GLTF Models will be added
-   
-    //for adding Helpers and FPS
+    clock = new Clock();  
     debug = new Debug();
-    // debug.createHelpers(scene);
 
     //WINDOW RESIZER
     const resizer = new Resizer(container, camera, renderer, composer);
@@ -89,8 +72,7 @@ class World {
     camera.position.set(-1.91,2.165,3.53);      
     camera.updateMatrixWorld();
     camera.name="PerspectiveCamera"    
-     basicControls(scene,camera,cameraControls,renderer);       
-    // resetAndHelp(camera);            
+     basicControls(scene,camera,cameraControls,renderer);                      
  
   }
   async loadBackground() {
@@ -105,8 +87,7 @@ class World {
     scene.add(ambientLightSun);    
   } 
   //LoadRoom
-  async loadGLTF() {
-    delta = clock.getDelta();    
+  async loadGLTF() {     
     let { gltfData } = await gltfLoad(assets.Room[0].URL,renderer);
     let loadedmodel = gltfData.scene;        
     console.log(gltfData)   
@@ -120,17 +101,34 @@ class World {
     Point_Light.shadow.camera.near = 0.1; 
     Point_Light.shadow.camera.far = 1000;     
     console.log(Point_Light)
-   
+
+     mixer = new AnimationMixer(loadedmodel);  
+
   if(gui)gui.destroy()                 
   gui = new GUI();  
   gui.add( gltfData, 'Material Variants', {
     'Red': 0,
     'Green': 1,
-    'Black': 2,    
+    'Blue': 2,    
   } ).onChange( function ( value ) {
     let i= parseInt( value );
     gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );   
     console.log(gltfData.scene)          
+  } );
+
+  gui.add( gltfData, 'Animations', {
+    'Recline': 0,
+    'Normal': 1,    
+  } ).onChange( function ( value ) {
+    let i= parseInt( value );    
+    console.log(gltfData.animations)
+    animationClips[i] = mixer.clipAction(gltfData.animations[i]);
+    animationClips[i].setLoop(LoopOnce);
+    animationClips[i].blendMode = 1;
+    animationClips[i].clampWhenFinished = true;    
+    
+    mixer.stopAllAction();
+    animationClips[i].play(); 
   } );
    
    gui.add( Point_Light, 'Light', {
@@ -148,7 +146,7 @@ class World {
  //SSS
  console.log(scene)
  if(Point_Light.intensity>0){    
-  let LampTop = scene.getObjectByName("Lamp_Cover");
+  let LampTop = scene.getObjectByName("Mesh0080_6");
   let texLoader = new TextureLoader();
   let subTexture = texLoader.load("textures/subSurface.jpg");
   subTexture.wrapS = RepeatWrapping;
@@ -249,9 +247,11 @@ class World {
       composer.render();
       camera.updateMatrixWorld()                     
 
+      const delta = clock.getDelta();       
+     if(mixer) mixer.update(delta)
       //DEBUG      
       debug.update(renderer);
-      TWEEN.update()               
+                    
       //console.log(localStorage)
     });  
        
