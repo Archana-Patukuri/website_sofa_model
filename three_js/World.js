@@ -100,7 +100,7 @@ class World {
     //scene.environment.position.set(1,0,0)
     //scene.environment.center.x=-10
     ambientLightSun = new AmbientLight();
-    // ambientLightSun.color = new THREE.Color(0xffffff);
+    ambientLightSun.color = new THREE.Color(0xffffff);
     ambientLightSun.intensity = 1;
     scene.add(ambientLightSun);    
   } 
@@ -117,9 +117,9 @@ class World {
                        
     Point_Light.shadow.mapSize.width = 2048; 
     Point_Light.shadow.mapSize.height = 2048;
-     Point_Light.shadow.camera.near = 0.1; 
-    Point_Light.shadow.camera.far = 1000; 
-    
+    Point_Light.shadow.camera.near = 0.1; 
+    Point_Light.shadow.camera.far = 1000;     
+    console.log(Point_Light)
    
   if(gui)gui.destroy()                 
   gui = new GUI();  
@@ -129,7 +129,8 @@ class World {
     'Black': 2,    
   } ).onChange( function ( value ) {
     let i= parseInt( value );
-    gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );             
+    gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );   
+    console.log(gltfData.scene)          
   } );
    
    gui.add( Point_Light, 'Light', {
@@ -145,8 +146,9 @@ class World {
   } ); 
   gui.close();  
  //SSS
+ console.log(scene)
  if(Point_Light.intensity>0){    
-  let LampTop = scene.getObjectByName("Mesh0080_5");
+  let LampTop = scene.getObjectByName("Lamp_Cover");
   let texLoader = new TextureLoader();
   let subTexture = texLoader.load("textures/subSurface.jpg");
   subTexture.wrapS = RepeatWrapping;
