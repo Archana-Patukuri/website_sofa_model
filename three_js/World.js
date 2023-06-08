@@ -143,7 +143,7 @@ class World {
       renderer.toneMappingExposure = 2;      
     }   
   } ); 
-  
+  gui.close();  
  //SSS
  if(Point_Light.intensity>0){    
   let LampTop = scene.getObjectByName("Mesh0080_5");
