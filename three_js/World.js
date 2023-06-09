@@ -81,9 +81,7 @@ class World {
   async loadBackground() {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
     scene.environment = hdri1;          
-    scene.background=background0
-    //scene.environment.position.set(1,0,0)
-    //scene.environment.center.x=-10
+    scene.background = new THREE.Color(0xf5f5f5)    
    /*  ambientLightSun = new AmbientLight();
     ambientLightSun.color = new THREE.Color(0xffffff);
     ambientLightSun.intensity = 1;
@@ -186,8 +184,7 @@ let geometry = new THREE.PlaneGeometry( 3, 3);
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
     textureHeight: window.innerHeight * window.devicePixelRatio,
-    color: 0x888888,
-    multisample:4,
+    color: 0x888888,   
     } );           
     groundMirror.rotation.x = - Math.PI / 2;            
     groundMirror.position.z=0.25;
