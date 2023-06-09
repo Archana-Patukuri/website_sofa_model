@@ -8,7 +8,8 @@ import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { gltfLoad } from "./components/gltf_loader/gltfLoad.js";
 import { hdriLoad } from "./components/hdri_loader/hdri_loader.js";
 import { Debug } from "./systems/Debug.js";
-import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
+// import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
+import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 import {
   Clock,
   Vector3,
@@ -179,6 +180,24 @@ class World {
   LampTop.material = subMaterial;      
 }
 
+let Floor=scene.getObjectByName("Plane001_1")
+let geometry = new THREE.PlaneGeometry( 3, 3);  
+  let groundMirror = new Reflector( geometry, {
+    clipBias: 0.003,
+    textureWidth: window.innerWidth * window.devicePixelRatio,
+    textureHeight: window.innerHeight * window.devicePixelRatio,
+    color: 0x888888,
+    multisample:4,
+    } );           
+    groundMirror.rotation.x = - Math.PI / 2;            
+    groundMirror.position.z=0.25;
+    groundMirror.position.y=-0.01;            
+    groundMirror.position.x=0.5;     
+    Floor.material.opacity=0.7;             
+    Floor.material.transparent=true;                
+    scene.add( groundMirror );  
+
+
     renderer.render(scene, camera);           
   }    
 //CreatePostProcess Effects
@@ -206,7 +225,7 @@ class World {
    
 
   //SSR   
-        let groundReflector,ssrPass,geometry,selects         
+       /*  let groundReflector,ssrPass,geometry,selects         
           const params = {
             enableSSR: true,      
             groundReflector: true,
@@ -236,7 +255,7 @@ class World {
             } );            
                 composer.addPass( ssrPass );
                 scene.add( groundReflector );  
-                     
+        */              
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
        
