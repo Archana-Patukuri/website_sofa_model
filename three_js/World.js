@@ -8,6 +8,7 @@ import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { gltfLoad } from "./components/gltf_loader/gltfLoad.js";
 import { hdriLoad } from "./components/hdri_loader/hdri_loader.js";
 import { Debug } from "./systems/Debug.js";
+import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
 import {
   Clock,
   Vector3,
@@ -28,7 +29,8 @@ import { SubsurfaceScatteringShader } from "three/examples/jsm/shaders/Subsurfac
 import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
 import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
 import assets from "./dataBase/assets.json" assert { type: "json" };
-
+import { TAARenderPass } from '../node_modules/three/examples/jsm/postprocessing/TAARenderPass.js';
+import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
 const container = document.querySelector("#scene-container");
 
 let camera;
@@ -81,10 +83,10 @@ class World {
     scene.background=background0
     //scene.environment.position.set(1,0,0)
     //scene.environment.center.x=-10
-    ambientLightSun = new AmbientLight();
+   /*  ambientLightSun = new AmbientLight();
     ambientLightSun.color = new THREE.Color(0xffffff);
     ambientLightSun.intensity = 1;
-    scene.add(ambientLightSun);    
+    scene.add(ambientLightSun);   */  
   } 
   //LoadRoom
   async loadGLTF() {     
@@ -93,12 +95,9 @@ class World {
     scene.add(loadedmodel)          
     let Point_Light=scene.getObjectByName("Point_Light");
     Point_Light.intensity=10; 
-    Point_Light.castShadow=true;
-                       
+    Point_Light.castShadow=true;     
     Point_Light.shadow.mapSize.width = 2048; 
-    Point_Light.shadow.mapSize.height = 2048;
-    Point_Light.shadow.camera.near = 0.1; 
-    Point_Light.shadow.camera.far = 1000;         
+    Point_Light.shadow.mapSize.height = 2048;         
 
      mixer = new AnimationMixer(loadedmodel);  
 
@@ -112,7 +111,7 @@ class World {
     if(value==0)  {
       renderer.toneMappingExposure = 0.1;      
     }else{
-      renderer.toneMappingExposure = 2;      
+      renderer.toneMappingExposure = 1;      
     }   
   } );  
   
@@ -140,7 +139,7 @@ class World {
    
   
   gui.close();  
- //SSS 
+ //SSS(Sub surface scattering effect)
  if(Point_Light.intensity>0){    
   let LampTop = scene.getObjectByName("Mesh0080_6");
   let texLoader = new TextureLoader();
@@ -175,26 +174,31 @@ class World {
     renderer.render(scene, camera);           
   }    
 //CreatePostProcess Effects
-  createPostProcess() {   
+  createPostProcess() { 
+    //SHADOWS  
     scene.traverse(function (child) {              
-      if (child.isMesh ) {  
-        //SHADOWS      
-        if(child.name=="Plane" || child.name=="Plane_1" ){
-          child.castShadow = false;
+      if (child.isMesh ) {                          
+        if(child.name=="Plane001_1"){          
           child.receiveShadow = true;                  
-        }else{
-        child.castShadow = true; 
-        child.receiveShadow = true;                
-        }  
-             
-                                
+        }else{          
+        child.castShadow = true;                  
+        } 
+                                                    
       }          
-  })
+  }) 
  
 
-    const renderPass = new RenderPass(scene, camera);        
-    composer.addPass(renderPass);                
-  //SSR
+    const renderPass = new RenderPass(scene, camera); 
+    // renderPass.enabled = false;       
+    composer.addPass(renderPass);     
+    
+   /*  const taaRenderPass = new TAARenderPass(scene, camera);
+    taaRenderPass.unbiased = true;
+    taaRenderPass.sampleLevel = 1;        
+    composer.addPass(taaRenderPass);  */
+    
+
+  //SSR   
         let groundReflector,ssrPass,geometry,selects         
           const params = {
             enableSSR: true,      
@@ -211,11 +215,9 @@ class World {
             groundReflector.material.depthWrite = false;
             groundReflector.rotation.x = - Math.PI / 2;            
             groundReflector.position.z=0.25;
+            groundReflector.position.y=0.001;            
             groundReflector.position.x=0.5;                        
-         
-           let Floor = scene.getObjectByName('Plane_1');  
-           Floor.material.opacity=0.7;   
-           Floor.material.transparent=true;                   
+                                   
             ssrPass = new SSRPass( {
               renderer,
               scene,
@@ -224,11 +226,10 @@ class World {
               height: innerHeight,
               groundReflector: params.groundReflector ? groundReflector : null,
               selects: params.groundReflector ? selects : null
-            } );
-                                                      
+            } );            
                 composer.addPass( ssrPass );
-                scene.add( groundReflector ); 
-     
+                scene.add( groundReflector );  
+                     
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
        
@@ -241,6 +242,7 @@ class World {
     renderer.setAnimationLoop(function () {
       cameraControls.update();      
       composer.render();
+      // renderer.render(scene, camera);
       camera.updateMatrixWorld()                     
 
       const delta = clock.getDelta();       
