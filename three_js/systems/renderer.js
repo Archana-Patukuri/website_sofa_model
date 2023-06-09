@@ -1,6 +1,7 @@
 import {
   WebGLRenderer,
   ACESFilmicToneMapping,
+  LinearToneMapping,
   sRGBEncoding,
   PCFSoftShadowMap,
 } from "three";

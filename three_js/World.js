@@ -94,16 +94,22 @@ class World {
     let loadedmodel = gltfData.scene;             
     scene.add(loadedmodel)          
     let Point_Light=scene.getObjectByName("Point_Light");
-    Point_Light.intensity=10; 
+    Point_Light.intensity=5; 
     Point_Light.castShadow=true;     
     Point_Light.shadow.mapSize.width = 2048; 
     Point_Light.shadow.mapSize.height = 2048;         
-
+    Point_Light.shadow.camera.near = 0.01; 
+    Point_Light.shadow.camera.far = 1000;
      mixer = new AnimationMixer(loadedmodel);  
 
+     let param={
+      'Light':10,
+      'Animations':1,
+      'Material Variants':0
+     }
   if(gui)gui.destroy()                 
   gui = new GUI(); 
-  gui.add( Point_Light, 'Light', {
+  gui.add( param, 'Light', {
     'On': 10,
     'Off': 0,       
   } ).onChange( function ( value ) {    
@@ -115,7 +121,7 @@ class World {
     }   
   } );  
   
-  gui.add( gltfData, 'Animations', {
+  gui.add( param, 'Animations', {
     'Recline': 0,
     'Normal': 1,    
   } ).onChange( function ( value ) {
@@ -129,7 +135,7 @@ class World {
       mixer.stopAllAction();
     }
   } );
-  gui.add( gltfData, 'Material Variants', {
+  gui.add( param, 'Material Variants', {
     'Red': 0,
     'Green': 1,
     'Blue': 2,    
@@ -180,7 +186,7 @@ class World {
     //SHADOWS  
     scene.traverse(function (child) {              
       if (child.isMesh ) {                          
-        if(child.name=="Plane001_1"){          
+        if(child.name=="Plane001_1" || child.name=="Plane001"){          
           child.receiveShadow = true;                  
         }else{          
         child.castShadow = true;                  
@@ -193,10 +199,10 @@ class World {
     // renderPass.enabled = false;       
     composer.addPass(renderPass);     
     
-   /*  const taaRenderPass = new TAARenderPass(scene, camera);
+     const taaRenderPass = new TAARenderPass(scene, camera);
     taaRenderPass.unbiased = true;
     taaRenderPass.sampleLevel = 1;        
-    composer.addPass(taaRenderPass);  */
+    composer.addPass(taaRenderPass);  
    
 
   //SSR   
@@ -218,7 +224,7 @@ class World {
             groundReflector.position.z=0.25;
             groundReflector.position.y=0.001;            
             groundReflector.position.x=0.5;                        
-                                   
+                     
             ssrPass = new SSRPass( {
               renderer,
               scene,
