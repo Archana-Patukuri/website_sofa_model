@@ -81,7 +81,7 @@ class World {
   async loadBackground() {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
     scene.environment = hdri1;          
-    scene.background = new THREE.Color(0xf5f5f5)    
+    scene.background = new THREE.Color(0xf5f5f5); 
    /*  ambientLightSun = new AmbientLight();
     ambientLightSun.color = new THREE.Color(0xffffff);
     ambientLightSun.intensity = 1;
@@ -186,11 +186,14 @@ let geometry = new THREE.PlaneGeometry( 3, 3);
     textureHeight: window.innerHeight * window.devicePixelRatio,
     color: 0x888888,   
     } );           
-    groundMirror.rotation.x = - Math.PI / 2;            
-    groundMirror.position.z=0.25;
+    groundMirror.rotation.x = - Math.PI / 2; 
+   /*  groundMirror.position.z=0.1;
     groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.5;     
-    Floor.material.opacity=0.7;             
+    groundMirror.position.x=0.8;   */            
+     groundMirror.position.z=0.25;
+    groundMirror.position.y=-0.01;            
+    groundMirror.position.x=0.5;      
+    Floor.material.opacity=0.5;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );  
 
@@ -207,7 +210,9 @@ let geometry = new THREE.PlaneGeometry( 3, 3);
         }else{          
         child.castShadow = true;                  
         } 
-                                                    
+            if(child.name=="Mesh0080_3"){
+              child.castShadow=false
+            }                                        
       }          
   }) 
 
