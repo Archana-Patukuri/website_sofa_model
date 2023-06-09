@@ -119,20 +119,22 @@ class World {
     'Recline': 0,
     'Normal': 1,    
   } ).onChange( function ( value ) {
-    let i= parseInt( value );        
+    let i= parseInt( value );  
+    if(i==0){      
     animationClips[i] = mixer.clipAction(gltfData.animations[i]);
-    animationClips[i].setLoop(LoopOnce);
-    animationClips[i].blendMode = 1;
-    animationClips[i].clampWhenFinished = true;        
-    mixer.stopAllAction();
+    animationClips[i].setLoop(LoopOnce);    
+    animationClips[i].clampWhenFinished = true;            
     animationClips[i].play(); 
+    }else{
+      mixer.stopAllAction();
+    }
   } );
   gui.add( gltfData, 'Material Variants', {
     'Red': 0,
     'Green': 1,
     'Blue': 2,    
   } ).onChange( function ( value ) {
-    let i= parseInt( value );
+    let i= parseInt( value );    
     gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );              
   } );
 
@@ -186,7 +188,6 @@ class World {
                                                     
       }          
   }) 
- 
 
     const renderPass = new RenderPass(scene, camera); 
     // renderPass.enabled = false;       
@@ -196,7 +197,7 @@ class World {
     taaRenderPass.unbiased = true;
     taaRenderPass.sampleLevel = 1;        
     composer.addPass(taaRenderPass);  */
-    
+   
 
   //SSR   
         let groundReflector,ssrPass,geometry,selects         
