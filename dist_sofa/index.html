@@ -10,14 +10,34 @@
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">   
 
      
-  <script type="module" crossorigin src="/assets/index-39ed5b19.js"></script>
-  <link rel="stylesheet" href="/assets/index-51c56cc4.css">
+  <script type="module" crossorigin src="/assets/index-1957b405.js"></script>
+  <link rel="stylesheet" href="/assets/index-645e6cb5.css">
 </head>
 
 <body>
-  <div class="container-fluid vh-100">  
+  <div class="container-fluid vh-100">   
+    <div class="row d-flex">
 
-    <div class="row ">
+      <div class="col m-0 p-0 position-relative">
+        <p id="controls-label">> <span class="control">Controls</span></p>
+        <div id="controlsContainer">
+        <div class="Light d-flex">
+          <label for="light" style="margin-right: 93px;">Light</label>
+          <input type="checkbox" id="light" checked name="light" value="light">
+          
+        </div>
+        <div class="animations">
+          <label style="margin-right: 50px;">Animations</label>
+          <input type="checkbox" id="animation" name="light" value="light">             
+      </div>
+        <div class="materialVariants">
+          <label style="margin-right: 15px;margin-bottom: 10px;">Material Variants</label>
+          <button id="buttonRed" class="button" value="0"></button>
+          <button id="buttonGreen" class="button" value="1"></button>
+          <button id="buttonBlue" class="button" value="2"></button>
+      </div>
+        </div>
+      </div>
       <!-- 3D Scene Container -->
       <div class="col-lg-12 m-0 p-0 position-relative links" id="3dcontainer">       
         
@@ -25,9 +45,12 @@
        <div id="loadingSpinner" class="position-absolute top-50 start-50 translate-middle" style="color:#FFFFFF"><strong>Loading...</strong>
           <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>        
         </div>                
-
+        <div id="ar-prompt">
+          <img src="prompt/hand.svg">
+        </div>
+       
       </div>
-     
+    </div>
     </div>
 
   </div>

@@ -72,6 +72,7 @@ input{
   background-color: #89000D; 
   border: none; 
   border-radius: 5px;
+  margin-top: 5px;
 }
 #buttonGreen{
   width: 30px;
