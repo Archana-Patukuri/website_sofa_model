@@ -45,6 +45,7 @@ let ambientLightSun;
 
 let delta,gui;
 let animationClips = [],mixer;
+let prompt=document.getElementById("ar-prompt");
 
 let mobile = false;
 if (/Android|iPhone/i.test(navigator.userAgent)) {
@@ -64,6 +65,10 @@ class World {
     camera = createCamera(); 
     scene.add(camera);                             
 
+    renderer.domElement.addEventListener( 'pointermove', (e) => {
+      prompt.style.display="none";
+    }); 
+    
     clock = new Clock();  
     debug = new Debug();
 
@@ -81,11 +86,7 @@ class World {
   async loadBackground() {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
     scene.environment = hdri1;          
-    scene.background = new THREE.Color(0xf5f5f5); 
-   /*  ambientLightSun = new AmbientLight();
-    ambientLightSun.color = new THREE.Color(0xffffff);
-    ambientLightSun.intensity = 1;
-    scene.add(ambientLightSun);   */  
+     scene.background = new THREE.Color(0xf5f5f5);         
   } 
   //LoadRoom
   async loadGLTF() {     
@@ -93,7 +94,7 @@ class World {
     let loadedmodel = gltfData.scene;             
     scene.add(loadedmodel)          
     let Point_Light=scene.getObjectByName("Point_Light");
-    Point_Light.intensity=5; 
+    Point_Light.intensity=10; 
     Point_Light.castShadow=true;     
     Point_Light.shadow.mapSize.width = 2048; 
     Point_Light.shadow.mapSize.height = 2048;         
@@ -179,7 +180,7 @@ class World {
 }
 
 let Floor=scene.getObjectByName("Plane001_1")
-let geometry = new THREE.PlaneGeometry( 3, 3);  
+let geometry = new THREE.PlaneGeometry( 2.8, 2.74);  
   let groundMirror = new Reflector( geometry, {
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
@@ -190,10 +191,10 @@ let geometry = new THREE.PlaneGeometry( 3, 3);
    /*  groundMirror.position.z=0.1;
     groundMirror.position.y=-0.01;            
     groundMirror.position.x=0.8;   */            
-     groundMirror.position.z=0.25;
+     groundMirror.position.z=0.14;
     groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.5;      
-    Floor.material.opacity=0.5;             
+    groundMirror.position.x=0.6;      
+    Floor.material.opacity=0.7;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );  
 
@@ -225,39 +226,6 @@ let geometry = new THREE.PlaneGeometry( 3, 3);
     taaRenderPass.sampleLevel = 1;        
     composer.addPass(taaRenderPass);  
    
-
-  //SSR   
-       /*  let groundReflector,ssrPass,geometry,selects         
-          const params = {
-            enableSSR: true,      
-            groundReflector: true,
-          };                    
-            geometry = new THREE.PlaneGeometry( 3, 3);
-            groundReflector = new ReflectorForSSRPass( geometry, {
-              clipBias: 0.0003,
-              textureWidth: window.innerWidth,
-              textureHeight: window.innerHeight,
-              color: 0x888888,
-              useDepthTexture: true,
-            } );
-            groundReflector.material.depthWrite = false;
-            groundReflector.rotation.x = - Math.PI / 2;            
-            groundReflector.position.z=0.25;
-            groundReflector.position.y=0.001;            
-            groundReflector.position.x=0.5;                        
-                     
-            ssrPass = new SSRPass( {
-              renderer,
-              scene,
-              camera,
-              width: innerWidth,
-              height: innerHeight,
-              groundReflector: params.groundReflector ? groundReflector : null,
-              selects: params.groundReflector ? selects : null
-            } );            
-                composer.addPass( ssrPass );
-                scene.add( groundReflector );  
-        */              
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
        
@@ -281,7 +249,8 @@ let geometry = new THREE.PlaneGeometry( 3, 3);
        
     //Spinner Remove after starting to render the scene
     let loadingSpinner = document.getElementById("loadingSpinner");   
-    loadingSpinner.remove();                 
+    loadingSpinner.remove();  
+    prompt.style.display="block";               
     renderer.render(scene, camera);
     //DEBUG
     debug.displayStats();         
