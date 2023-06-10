@@ -1,3 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow: hidden;  
+  font-size: 14px;
+  font-family: Sans-Serif;  
+} 
 #scene-container {
   height: 100vh;
   width: 100vw;
@@ -19,11 +29,41 @@
 #ar-prompt > img {
   animation: circle 4s linear infinite;
 }
-
+.controlsContainer{
+  width: 30vw;
+  padding: 20px;
+  margin-left: 70vw;  
+}
 @media (max-width:992px) {
   #ar-prompt {    
     left: 100%;
     top:50%;
    
   }
+  .controlsContainer{
+    width: 70vw;    
+    margin-left: 0vw; 
+  }
 } 
+input{
+  width: 18px;
+  height: 18px;
+}
+#buttonRed{
+  width: 30px;
+  height: 30px;
+  background-color: red; 
+  border: none; 
+}
+#buttonGreen{
+  width: 30px;
+  height: 30px;
+  background-color: green;  
+  border: none; 
+}
+#buttonBlue{
+  width: 30px;
+  height: 30px;
+  background-color: blue;  
+  border: none; 
+}

@@ -101,52 +101,35 @@ class World {
     Point_Light.shadow.camera.near = 0.01; 
     Point_Light.shadow.camera.far = 1000;
      mixer = new AnimationMixer(loadedmodel);  
-
-     let param={
-      'Light':10,
-      'Animations':1,
-      'Material Variants':0
-     }
-  if(gui)gui.destroy()                 
-  gui = new GUI(); 
-  gui.add( param, 'Light', {
-    'On': 10,
-    'Off': 0,       
-  } ).onChange( function ( value ) {    
-    Point_Light.intensity=parseInt( value ); 
-    if(value==0)  {
-      renderer.toneMappingExposure = 0.1;      
-    }else{
+    
+  let light=document.getElementById("light")
+  light.addEventListener("click",function(e){
+    if(e.target.checked){
+      Point_Light.intensity=10; 
       renderer.toneMappingExposure = 1;      
+    }else{
+      renderer.toneMappingExposure = 0.1;      
+      Point_Light.intensity=0; 
     }   
-  } );  
-  
-  gui.add( param, 'Animations', {
-    'Recline': 0,
-    'Normal': 1,    
-  } ).onChange( function ( value ) {
-    let i= parseInt( value );  
-    if(i==0){      
-    animationClips[i] = mixer.clipAction(gltfData.animations[i]);
-    animationClips[i].setLoop(LoopOnce);    
-    animationClips[i].clampWhenFinished = true;            
-    animationClips[i].play(); 
+  })
+  let animation=document.getElementById("animation");
+  animation.addEventListener("click",function(e){
+    if(e.target.checked){
+      animationClips[0] = mixer.clipAction(gltfData.animations[0]);
+      animationClips[0].setLoop(LoopOnce);    
+      animationClips[0].clampWhenFinished = true;            
+      animationClips[0].play(); 
     }else{
       mixer.stopAllAction();
     }
-  } );
-  gui.add( param, 'Material Variants', {
-    'Red': 0,
-    'Green': 1,
-    'Blue': 2,    
-  } ).onChange( function ( value ) {
-    let i= parseInt( value );    
-    gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );              
-  } );
-
-   
-  
-  gui.close();  
+  })
+  let button=document.querySelectorAll(".button") 
+  for(let i=0;i<3;i++){
+    button[i].addEventListener("click",function(){   
+      gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );                  
+  })
+  } 
+       
  //SSS(Sub surface scattering effect)
  if(Point_Light.intensity>0){    
   let LampTop = scene.getObjectByName("Mesh0080_6");
