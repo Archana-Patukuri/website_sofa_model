@@ -16,7 +16,7 @@ body {
 }
 #ar-prompt {
   position: absolute;
-  left: 50%;
+  left: 40%;
   top:50%;
   animation: elongate 2s infinite ease-in-out alternate;
   display: none; 
