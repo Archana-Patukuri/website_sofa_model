@@ -30,7 +30,7 @@ body {
   animation: circle 4s linear infinite;
 }
 #controlsContainer{
-  width: 30vw;
+  width: 40vw;
   /* padding: 20px; */
   /* margin-left: 70vw;   */
   margin-left: 1vw; 
