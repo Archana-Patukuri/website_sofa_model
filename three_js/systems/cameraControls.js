@@ -5,7 +5,7 @@ function createCameraControls(camera, canvas) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.1;
   controls.enableZoom = true;
-  controls.target.set(0.7, 0.1, 0);
+  controls.target.set(0.7, -0.3, 0);
   controls.update();
 
   return controls;
