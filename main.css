@@ -29,10 +29,23 @@ body {
 #ar-prompt > img {
   animation: circle 4s linear infinite;
 }
-.controlsContainer{
+#controlsContainer{
   width: 30vw;
-  padding: 20px;
+  /* padding: 20px; */
   margin-left: 70vw;  
+  display: none;
+}
+#controls-label{
+  width: 20vw;  
+  margin: 10px;   
+  margin-left: 68vw;  
+  font-weight: bold;
+  
+ /*  border: 1px solid black;  
+  border-radius: 10px; */
+}
+.control{
+  text-decoration: underline;
 }
 @media (max-width:992px) {
   #ar-prompt {    
@@ -40,9 +53,13 @@ body {
     top:50%;
    
   }
-  .controlsContainer{
+  #controlsContainer{
     width: 70vw;    
-    margin-left: 0vw; 
+    margin-left: 1vw; 
+    padding: 5px; 
+  }
+  #controls-label{
+    margin-left: 1vw;     
   }
 } 
 input{
@@ -52,18 +69,18 @@ input{
 #buttonRed{
   width: 30px;
   height: 30px;
-  background-color: red; 
+  background-color: #89000D; 
   border: none; 
 }
 #buttonGreen{
   width: 30px;
   height: 30px;
-  background-color: green;  
+  background-color: #174D0D;  
   border: none; 
 }
 #buttonBlue{
   width: 30px;
   height: 30px;
-  background-color: blue;  
+  background-color: #003245;  
   border: none; 
 }

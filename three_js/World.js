@@ -101,7 +101,15 @@ class World {
     Point_Light.shadow.camera.near = 0.01; 
     Point_Light.shadow.camera.far = 1000;
      mixer = new AnimationMixer(loadedmodel);  
-    
+    let controlsContainer=document.getElementById("controlsContainer")
+    let controls_label=document.getElementById("controls-label")
+    controls_label.addEventListener("click",function(e){
+      if(controlsContainer.style.display!="block"){
+      controlsContainer.style.display="block";
+      }else{
+        controlsContainer.style.display="none";
+      }
+    })
   let light=document.getElementById("light")
   light.addEventListener("click",function(e){
     if(e.target.checked){
@@ -128,8 +136,7 @@ class World {
     button[i].addEventListener("click",function(){   
       gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );                  
   })
-  } 
-       
+  }        
  //SSS(Sub surface scattering effect)
  if(Point_Light.intensity>0){    
   let LampTop = scene.getObjectByName("Mesh0080_6");

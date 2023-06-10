@@ -13,14 +13,12 @@
 </head>
 
 <body>
-  <div class="container-fluid vh-100">  
-   <!--  <div class="d-flex">   
-     
-    </div> -->
+  <div class="container-fluid vh-100">   
     <div class="row d-flex">
 
       <div class="col m-0 p-0 position-relative">
-        <div class="controlsContainer">
+        <p id="controls-label">> <span class="control">Controls</span></p>
+        <div id="controlsContainer">
         <div class="Light d-flex">
           <label for="light" style="margin-right: 93px;">Light</label>
           <input type="checkbox" id="light" checked name="light" value="light">
@@ -36,7 +34,7 @@
           <button id="buttonGreen" class="button" value="1"></button>
           <button id="buttonBlue" class="button" value="2"></button>
       </div>
-    </div>
+        </div>
       </div>
       <!-- 3D Scene Container -->
       <div class="col-lg-12 m-0 p-0 position-relative links" id="3dcontainer">       
