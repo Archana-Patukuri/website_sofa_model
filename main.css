@@ -16,7 +16,7 @@ body {
 }
 #ar-prompt {
   position: absolute;
-  left: 40%;
+  left: 50%;
   top:50%;
   animation: elongate 2s infinite ease-in-out alternate;
   display: none; 
@@ -32,13 +32,15 @@ body {
 #controlsContainer{
   width: 30vw;
   /* padding: 20px; */
-  margin-left: 70vw;  
+  /* margin-left: 70vw;   */
+  margin-left: 1vw; 
   display: none;
 }
 #controls-label{
   width: 20vw;  
   margin: 10px;   
-  margin-left: 68vw;  
+  /* margin-left: 68vw;   */
+  margin-left: 1vw; 
   font-weight: bold;  
 }
 .control{
