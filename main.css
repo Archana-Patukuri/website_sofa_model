@@ -19,7 +19,7 @@ body {
   left: 60%;
   top:30%;
   animation: elongate 2s infinite ease-in-out alternate;
-  display: none; 
+  display: none;   
 }
 
 @keyframes elongate {
