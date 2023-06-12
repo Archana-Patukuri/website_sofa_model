@@ -46,6 +46,9 @@ body {
 .control{
   text-decoration: underline;
 }
+.light{
+  margin-right: 60.5px;
+}
 @media (max-width:600px) {
   #ar-prompt {    
     left: 100%;
@@ -59,6 +62,9 @@ body {
   }
   #controls-label{
     margin-left: 1vw;     
+  }
+  .light{
+    margin-right: 62px;
   }
 } 
 /* input{
