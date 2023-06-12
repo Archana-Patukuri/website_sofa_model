@@ -177,7 +177,8 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
     textureHeight: window.innerHeight * window.devicePixelRatio,
     color: 0x888888,   
     } );        
-    console.log(groundMirror)   
+    console.log(groundMirror)  
+ 
     groundMirror.scale.x=1.5
     groundMirror.scale.z=1.5
     // groundMirror.rotation.x = - Math.PI / 2;            
