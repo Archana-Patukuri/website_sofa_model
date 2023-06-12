@@ -171,19 +171,19 @@ class World {
 
 let Floor=scene.getObjectByName("Plane001_1")
 let geometry = new THREE.PlaneGeometry( 2.8, 2.74);  
-  let groundMirror = new Reflector( geometry, {
+  let groundMirror = new Reflector( Floor.geometry, {
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
     textureHeight: window.innerHeight * window.devicePixelRatio,
     color: 0x888888,   
-    } );           
-    groundMirror.rotation.x = - Math.PI / 2; 
-   /*  groundMirror.position.z=0.1;
+    } );        
+    console.log(groundMirror)   
+    groundMirror.scale.x=1.5
+    groundMirror.scale.z=1.5
+    // groundMirror.rotation.x = - Math.PI / 2;            
+    groundMirror.position.z=0.25;
     groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.8;   */            
-     groundMirror.position.z=0.14;
-    groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.6;      
+    groundMirror.position.x=0.5;      
     Floor.material.opacity=0.7;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );  
