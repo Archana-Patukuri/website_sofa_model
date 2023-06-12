@@ -64,13 +64,9 @@ body {
     margin-left: 1vw;     
   }
   .light{
-    margin-right: 62px;
+    margin-right: 62.5px;
   }
 } 
-/* input{
-  width: 18px;
-  height: 18px;
-} */
 #buttonRed{
   width: 30px;
   height: 30px;
