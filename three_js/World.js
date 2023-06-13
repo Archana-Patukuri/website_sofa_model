@@ -168,28 +168,24 @@ class World {
 
   LampTop.material = subMaterial;      
 }
-
+ /* 
 let Floor=scene.getObjectByName("Plane001_1")
 let geometry = new THREE.PlaneGeometry( 2.8, 2.74);  
-  let groundMirror = new Reflector( Floor.geometry, {
+
+ //MIRROR
+  let groundMirror = new Reflector( geometry, {
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
     textureHeight: window.innerHeight * window.devicePixelRatio,
     color: 0x888888,   
-    } );        
-    console.log(groundMirror)  
- 
-    groundMirror.scale.x=1.5
-    groundMirror.scale.z=1.5
-    // groundMirror.rotation.x = - Math.PI / 2;            
-    groundMirror.position.z=0.25;
+    } );             
+    groundMirror.rotation.x = - Math.PI / 2;  
+    groundMirror.position.z=0.14;
     groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.5;      
-    Floor.material.opacity=0.7;             
+    groundMirror.position.x=0.6;  
+    Floor.material.opacity=0.5;             
     Floor.material.transparent=true;                
-    scene.add( groundMirror );  
-
-
+    scene.add( groundMirror );   */
     renderer.render(scene, camera);           
   }    
 //CreatePostProcess Effects
@@ -212,10 +208,45 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
     // renderPass.enabled = false;       
     composer.addPass(renderPass);     
     
-     const taaRenderPass = new TAARenderPass(scene, camera);
+
+    let groundReflector,ssrPass,geometry,selects         
+    const params = {
+      enableSSR: false,      
+      groundReflector: true,
+    };                    
+      geometry = new THREE.PlaneGeometry( 3, 3);
+      groundReflector = new ReflectorForSSRPass( geometry, {
+        clipBias: 0.0003,
+        textureWidth: window.innerWidth,
+        textureHeight: window.innerHeight,
+        color: 0x888888,
+        useDepthTexture: true,
+      } );
+      // groundReflector.material.depthWrite = false;
+      groundReflector.rotation.x = - Math.PI / 2;            
+      groundReflector.position.z=0.25;
+      groundReflector.position.x=0.5;       
+      groundReflector.position.y=0.01;                                              
+      ssrPass = new SSRPass( {
+        renderer,
+        scene,
+        camera,
+        width: innerWidth,
+        height: innerHeight,
+        groundReflector: params.groundReflector ? groundReflector : null,
+        selects: params.groundReflector ? selects : null
+      } );
+                                                
+          composer.addPass( ssrPass );
+          scene.add( groundReflector ); 
+
+
+   
+
+    /*  const taaRenderPass = new TAARenderPass(scene, camera);
     taaRenderPass.unbiased = true;
     taaRenderPass.sampleLevel = 1;        
-    composer.addPass(taaRenderPass);  
+    composer.addPass(taaRenderPass);   */
    
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
