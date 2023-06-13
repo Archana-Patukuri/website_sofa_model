@@ -253,7 +253,11 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
     taaRenderPass.unbiased = true;
     taaRenderPass.sampleLevel = 1;        
     composer.addPass(taaRenderPass);   */
-   
+    let walls=scene.getObjectByName("Walls");
+    //walls.material.
+    walls.material.roughness=1;
+    walls.material.opacity=0;
+      console.log(walls)
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
        
