@@ -1,5 +1,5 @@
 
-const setSize = function (container, camera, renderer, composer) {
+const setSize = function (container, camera, renderer, composer,groundReflector) {
   camera.aspect = container.clientWidth / container.clientHeight;
   camera.updateProjectionMatrix();
 
@@ -16,18 +16,23 @@ const setSize = function (container, camera, renderer, composer) {
 
   composer.setSize(container.clientWidth, container.clientHeight);
   composer.setPixelRatio(window.devicePixelRatio * val);
+if(groundReflector){
+  groundReflector.getRenderTarget().setSize( window.innerWidth, window.innerHeight );
+  groundReflector.resolution.set( window.innerWidth, window.innerHeight );
+  console.log("ground reflector")
+}
  
 };
 
 class Resizer {
-  constructor(container, camera, renderer, composer,) {
+  constructor(container, camera, renderer, composer,groundReflector) {
     // set initial size
-    setSize(container, camera, renderer, composer);
+    setSize(container, camera, renderer, composer,groundReflector);
 
     window.addEventListener("resize", () => {
       // set the size again if a resize occurs
-      setSize(container, camera, renderer, composer);
-      
+      setSize(container, camera, renderer, composer,groundReflector);
+     
     });
   }
 }

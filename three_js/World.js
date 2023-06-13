@@ -46,6 +46,7 @@ let ambientLightSun;
 let delta,gui;
 let animationClips = [],mixer;
 let prompt=document.getElementById("ar-prompt");
+let groundReflector,ssrPass,geometry,selects         
 
 let mobile = false;
 if (/Android|iPhone/i.test(navigator.userAgent)) {
@@ -73,7 +74,7 @@ class World {
     debug = new Debug();
 
     //WINDOW RESIZER
-    const resizer = new Resizer(container, camera, renderer, composer);
+    const resizer = new Resizer(container, camera, renderer, composer,groundReflector);
     container.append(renderer.domElement);
     //Orbit Controlls for Camera
     cameraControls = createCameraControls(camera, renderer.domElement);
@@ -209,7 +210,7 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
     composer.addPass(renderPass);     
     
 
-    let groundReflector,ssrPass,geometry,selects         
+   
     const params = {
       enableSSR: true,      
       groundReflector: true,
@@ -245,7 +246,8 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
           scene.add( groundReflector ); 
 
 
-   
+          groundReflector.getRenderTarget().setSize( window.innerWidth, window.innerHeight );
+          groundReflector.resolution.set( window.innerWidth, window.innerHeight );
 
     /*  const taaRenderPass = new TAARenderPass(scene, camera);
     taaRenderPass.unbiased = true;
