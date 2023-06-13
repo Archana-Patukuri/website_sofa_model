@@ -86,8 +86,8 @@ class World {
   }
   async loadBackground() {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
-    scene.environment = hdri1;          
-     scene.background = new THREE.Color(0xf5f5f5);         
+    scene.environment = hdri0;          
+     scene.background = new THREE.Color(251,251,251);         
   } 
   //LoadRoom
   async loadGLTF() {     
@@ -169,9 +169,9 @@ class World {
 
   LampTop.material = subMaterial;      
 }
- /* 
+ 
 let Floor=scene.getObjectByName("Plane001_1")
-let geometry = new THREE.PlaneGeometry( 2.8, 2.74);  
+let geometry = new THREE.PlaneGeometry( 3, 3.06);  
 
  //MIRROR
   let groundMirror = new Reflector( geometry, {
@@ -181,12 +181,12 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
     color: 0x888888,   
     } );             
     groundMirror.rotation.x = - Math.PI / 2;  
-    groundMirror.position.z=0.14;
+    groundMirror.position.z=0.225;
     groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.6;  
-    Floor.material.opacity=0.5;             
+    groundMirror.position.x=0.5;  
+    Floor.material.opacity=0.7;             
     Floor.material.transparent=true;                
-    scene.add( groundMirror );   */
+    scene.add( groundMirror );   
     renderer.render(scene, camera);           
   }    
 //CreatePostProcess Effects
@@ -210,7 +210,7 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
     composer.addPass(renderPass);     
     
 
-   
+  /*  
     const params = {
       enableSSR: true,      
       groundReflector: true,
@@ -236,28 +236,28 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
         height: innerHeight,
         groundReflector: params.groundReflector ? groundReflector : null,
         selects: params.groundReflector ? selects : null
-      } );
-                                                
-          
+      } );                                                          
           ssrPass.infiniteThick = false;
           ssrPass.opacity = 0.5;
           groundReflector.opacity = ssrPass.opacity;
           composer.addPass( ssrPass );
           scene.add( groundReflector ); 
 
-
           groundReflector.getRenderTarget().setSize( window.innerWidth, window.innerHeight );
           groundReflector.resolution.set( window.innerWidth, window.innerHeight );
 
-    /*  const taaRenderPass = new TAARenderPass(scene, camera);
-    taaRenderPass.unbiased = true;
-    taaRenderPass.sampleLevel = 1;        
-    composer.addPass(taaRenderPass);   */
+   
     let walls=scene.getObjectByName("Walls");
     //walls.material.
     walls.material.roughness=1;
     walls.material.opacity=0;
       console.log(walls)
+ */
+
+       /*  const taaRenderPass = new TAARenderPass(scene, camera);
+    taaRenderPass.unbiased = true;
+    taaRenderPass.sampleLevel = 1;        
+    composer.addPass(taaRenderPass);   */
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
        
