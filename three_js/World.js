@@ -226,17 +226,21 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
       groundReflector.rotation.x = - Math.PI / 2;            
       groundReflector.position.z=0.25;
       groundReflector.position.x=0.5;       
-      groundReflector.position.y=0.01;                                              
+      // groundReflector.position.y=0.01;                                              
       ssrPass = new SSRPass( {
         renderer,
         scene,
         camera,
-        width: geometry.width,
-        height: geometry.height,
+        width: innerWidth,
+        height: innerHeight,
         groundReflector: params.groundReflector ? groundReflector : null,
         selects: params.groundReflector ? selects : null
       } );
                                                 
+          
+          ssrPass.infiniteThick = false;
+          ssrPass.opacity = 0.5;
+          groundReflector.opacity = ssrPass.opacity;
           composer.addPass( ssrPass );
           scene.add( groundReflector ); 
 
