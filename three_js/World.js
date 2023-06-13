@@ -211,7 +211,7 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
 
     let groundReflector,ssrPass,geometry,selects         
     const params = {
-      enableSSR: false,      
+      enableSSR: true,      
       groundReflector: true,
     };                    
       geometry = new THREE.PlaneGeometry( 3, 3);
@@ -222,7 +222,7 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
         color: 0x888888,
         useDepthTexture: true,
       } );
-      // groundReflector.material.depthWrite = false;
+     groundReflector.material.depthWrite = false;
       groundReflector.rotation.x = - Math.PI / 2;            
       groundReflector.position.z=0.25;
       groundReflector.position.x=0.5;       
@@ -231,8 +231,8 @@ let geometry = new THREE.PlaneGeometry( 2.8, 2.74);
         renderer,
         scene,
         camera,
-        width: innerWidth,
-        height: innerHeight,
+        width: geometry.width,
+        height: geometry.height,
         groundReflector: params.groundReflector ? groundReflector : null,
         selects: params.groundReflector ? selects : null
       } );
