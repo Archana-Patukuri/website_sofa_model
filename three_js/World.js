@@ -142,7 +142,7 @@ class World {
   }        
  //SSS(Sub surface scattering effect)
  if(Point_Light.intensity>0){    
-  let LampTop = scene.getObjectByName("Mesh0080_6");
+  let LampTop = scene.getObjectByName("Lamp_Cover");
   let texLoader = new TextureLoader();
   let subTexture = texLoader.load("textures/subSurface.jpg");
   subTexture.wrapS = RepeatWrapping;
@@ -169,11 +169,11 @@ class World {
     lights: true,
   });
 
-  // LampTop.material = subMaterial;      
+   LampTop.material = subMaterial;      
 }
 
 let Floor=scene.getObjectByName("Plane_1")
-let geometry = new THREE.PlaneGeometry( 3, 3.06);  
+let geometry = new THREE.PlaneGeometry( 3.01, 3.06);  
 
  //MIRROR
   let groundMirror = new Reflector( geometry, {
@@ -185,8 +185,8 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     groundMirror.rotation.x = - Math.PI / 2;  
     groundMirror.position.z=0.225;
     groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.5;  
-    Floor.material.opacity=0.5;             
+    groundMirror.position.x=0.51;  
+    Floor.material.opacity=0.7;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );   
   
@@ -197,11 +197,14 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     //SHADOWS  
     scene.traverse(function (child) {              
       if (child.isMesh ) {                          
-        if(child.name=="Plane001_1" || child.name=="Plane001"){          
+        if( child.name=="Plane_1"){          
           child.receiveShadow = true;                  
         }else{          
         child.castShadow = true;                  
         } 
+        if(child.name=="Plane" ){
+          child.receiveShadow=false
+        }
             if(child.name=="Mesh0080_3"){
               child.castShadow=false
             }                                        
@@ -212,53 +215,7 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     // renderPass.enabled = false;       
     composer.addPass(renderPass);     
     
-
-    // let Floor=scene.getObjectByName("Plane001_1")
-  /*   const params = {
-      enableSSR: true,      
-      groundReflector: true,
-    };                    
-      geometry = new THREE.PlaneGeometry( 3, 3);
-      groundReflector = new ReflectorForSSRPass( geometry, {
-        clipBias: 0.0003,
-        textureWidth: window.innerWidth,
-        textureHeight: window.innerHeight,
-        color: 0x888888,
-        useDepthTexture: true,
-      } );
-     groundReflector.material.depthWrite = false;
-       groundReflector.rotation.x = - Math.PI / 2;            
-      groundReflector.position.z=0.25;
-      groundReflector.position.x=0.5;       
-      // groundReflector.position.y=0.01;                                              
-      ssrPass = new SSRPass( {
-        renderer,
-        scene,
-        camera,
-        width: innerWidth,
-        height: innerHeight,
-        groundReflector: params.groundReflector ? groundReflector : null,
-        selects: params.groundReflector ? selects : null
-      } );                                                          
-          ssrPass.infiniteThick = false;
-          ssrPass.opacity = 0.5;
-          groundReflector.opacity = ssrPass.opacity;
-          composer.addPass( ssrPass );
-          scene.add( groundReflector ); 
-
-          groundReflector.getRenderTarget().setSize( window.innerWidth, window.innerHeight );
-          groundReflector.resolution.set( window.innerWidth, window.innerHeight );
-
-   
-   */ 
-  /*  let walls=scene.getObjectByName("Walls");
-    //walls.material.
-    walls.material.roughness=1;
-    walls.material.opacity=0;
-      console.log(walls) */
- 
-
-         const taaRenderPass = new TAARenderPass(scene, camera);
+    const taaRenderPass = new TAARenderPass(scene, camera);
     taaRenderPass.unbiased = true;
     taaRenderPass.sampleLevel = 1;        
     composer.addPass(taaRenderPass);  
