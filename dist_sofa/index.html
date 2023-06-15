@@ -10,26 +10,14 @@
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">   
 
      
-  <script type="module" crossorigin src="/assets/index-4c2c7004.js"></script>
-  <link rel="stylesheet" href="/assets/index-7ccf372e.css">
+  <script type="module" crossorigin src="/assets/index-3f6d9860.js"></script>
+  <link rel="stylesheet" href="/assets/index-d73e9f12.css">
 </head>
 
 <body>
   <div class="container-fluid vh-100">   
     <div class="row d-flex">
-    <!-- 3D Scene Container -->
-    <div class="col-lg-10 p-0 position-relative links" style="margin-right: -250px;" id="3dcontainer">       
-            
-      <div id="scene-container"></div>               
-    <div id="loadingSpinner" class="position-absolute top-50 start-50 translate-middle" style="color:#f79d96"><strong>Loading...</strong>
-        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>        
-      </div>                
-      <div id="ar-prompt">
-        <img src="prompt/hand.svg">
-      </div>
-    
-    </div>
-      <div class="col-lg-2 m-0 p-0 position-relative">
+      <div class="col-md-1 p-0 position-relative" id="UIcontainer">
         <p id="controls-label">> <span class="control">Controls</span></p>
         <div id="controlsContainer">
         <div class="Light d-flex">
@@ -51,6 +39,21 @@
       </div>
         </div>
       </div>
+      <!-- 3D Scene Container -->
+    <div class="col-md-11 p-0 position-relative links" id="sceneContainer">       
+            
+      <div id="scene-container"></div>               
+    <div id="loadingSpinner" class="position-absolute top-50 start-50 translate-middle" style="color:#f79d96"><strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>        
+      </div>                
+      <div id="ar-prompt">
+        <img src="prompt/hand.svg">
+      </div>
+    
+    </div>
+     
+    
+    
       
     </div>
     </div>
