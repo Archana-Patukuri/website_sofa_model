@@ -87,7 +87,8 @@ class World {
   async loadBackground() {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
     scene.environment = hdri0;          
-     scene.background = new THREE.Color(251,251,251);         
+    //  scene.background = new THREE.Color(251,251,251);         
+    scene.background=background0;
   } 
   //LoadRoom
   async loadGLTF() {     
@@ -169,7 +170,7 @@ class World {
 
   LampTop.material = subMaterial;      
 }
- 
+/*  
 let Floor=scene.getObjectByName("Plane001_1")
 let geometry = new THREE.PlaneGeometry( 3, 3.06);  
 
@@ -187,7 +188,8 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     Floor.material.opacity=0.7;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );   
-    renderer.render(scene, camera);           
+ */   
+ renderer.render(scene, camera);           
   }    
 //CreatePostProcess Effects
   createPostProcess() { 
@@ -210,7 +212,7 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     composer.addPass(renderPass);     
     
 
-  /*  
+    let Floor=scene.getObjectByName("Plane001_1")
     const params = {
       enableSSR: true,      
       groundReflector: true,
@@ -252,7 +254,7 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     walls.material.roughness=1;
     walls.material.opacity=0;
       console.log(walls)
- */
+ 
 
        /*  const taaRenderPass = new TAARenderPass(scene, camera);
     taaRenderPass.unbiased = true;
