@@ -213,7 +213,7 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     composer.addPass(renderPass);     
     
 
-    let Floor=scene.getObjectByName("Plane001_1")
+    // let Floor=scene.getObjectByName("Plane001_1")
   /*   const params = {
       enableSSR: true,      
       groundReflector: true,
@@ -258,10 +258,10 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
       console.log(walls) */
  
 
-       /*  const taaRenderPass = new TAARenderPass(scene, camera);
+         const taaRenderPass = new TAARenderPass(scene, camera);
     taaRenderPass.unbiased = true;
     taaRenderPass.sampleLevel = 1;        
-    composer.addPass(taaRenderPass);   */
+    composer.addPass(taaRenderPass);  
     const copyPass2 = new ShaderPass(GammaCorrectionShader);    
     composer.addPass(copyPass2); 
        
