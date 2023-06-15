@@ -78,7 +78,8 @@ class World {
     container.append(renderer.domElement);
     //Orbit Controlls for Camera
     cameraControls = createCameraControls(camera, renderer.domElement);
-    camera.position.set(-3.1,2.165,5.53);      
+    // camera.position.set(-3.1,2.165,5.53);      
+    camera.position.set(-4.1,2.165,3.53);
     camera.updateMatrixWorld();
     camera.name="PerspectiveCamera"    
      basicControls(scene,camera,cameraControls,renderer);                      
@@ -168,10 +169,10 @@ class World {
     lights: true,
   });
 
-  LampTop.material = subMaterial;      
+  // LampTop.material = subMaterial;      
 }
-/*  
-let Floor=scene.getObjectByName("Plane001_1")
+
+let Floor=scene.getObjectByName("Plane_1")
 let geometry = new THREE.PlaneGeometry( 3, 3.06);  
 
  //MIRROR
@@ -185,10 +186,10 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     groundMirror.position.z=0.225;
     groundMirror.position.y=-0.01;            
     groundMirror.position.x=0.5;  
-    Floor.material.opacity=0.7;             
+    Floor.material.opacity=0.5;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );   
- */   
+  
  renderer.render(scene, camera);           
   }    
 //CreatePostProcess Effects
@@ -213,7 +214,7 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
     
 
     let Floor=scene.getObjectByName("Plane001_1")
-    const params = {
+  /*   const params = {
       enableSSR: true,      
       groundReflector: true,
     };                    
@@ -226,7 +227,7 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
         useDepthTexture: true,
       } );
      groundReflector.material.depthWrite = false;
-      groundReflector.rotation.x = - Math.PI / 2;            
+       groundReflector.rotation.x = - Math.PI / 2;            
       groundReflector.position.z=0.25;
       groundReflector.position.x=0.5;       
       // groundReflector.position.y=0.01;                                              
@@ -249,11 +250,12 @@ let geometry = new THREE.PlaneGeometry( 3, 3.06);
           groundReflector.resolution.set( window.innerWidth, window.innerHeight );
 
    
-    let walls=scene.getObjectByName("Walls");
+   */ 
+  /*  let walls=scene.getObjectByName("Walls");
     //walls.material.
     walls.material.roughness=1;
     walls.material.opacity=0;
-      console.log(walls)
+      console.log(walls) */
  
 
        /*  const taaRenderPass = new TAARenderPass(scene, camera);
