@@ -11,15 +11,15 @@ body {
 } 
 #scene-container {
   height: 100vh;
-   width: 80vw;    
+   /* width: 80vw;     */
   /* z-index:-1;   */
 }
 #UIcontainer{
  /* margin-left: 100px;  */
-
+ height: 40vh;
 }
 #sceneContainer{
-  width: 80vw; 
+  /* width: 80vw;  */
   /* padding-left: -200px; */
 }
 #ar-prompt {
@@ -57,7 +57,7 @@ body {
 .light{
   margin-right: 60.5px;
 }
-@media (max-width:600px) {
+@media (max-width:500px) {
   #ar-prompt {    
     left: 100%;
     top:50%;

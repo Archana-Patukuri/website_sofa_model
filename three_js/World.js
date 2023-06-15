@@ -78,8 +78,8 @@ class World {
     container.append(renderer.domElement);
     //Orbit Controlls for Camera
     cameraControls = createCameraControls(camera, renderer.domElement);
-    //camera.position.set(-3.1,2.165,5.53);      
-    camera.position.set(-4.1,2.165,3.53);
+    camera.position.set(-3.1,2.165,5.53);      
+    // camera.position.set(-4.1,2.165,3.53);
     camera.updateMatrixWorld();
     camera.name="PerspectiveCamera"    
      basicControls(scene,camera,cameraControls,renderer);                      
