@@ -103,16 +103,7 @@ class World {
     Point_Light.shadow.mapSize.height = 2048;         
     Point_Light.shadow.camera.near = 0.01; 
     Point_Light.shadow.camera.far = 1000;
-     mixer = new AnimationMixer(loadedmodel);  
-    let controlsContainer=document.getElementById("controlsContainer")
-    let controls_label=document.getElementById("controls-label")
-    controls_label.addEventListener("click",function(e){
-      if(controlsContainer.style.display!="block"){
-      controlsContainer.style.display="block";
-      }else{
-        controlsContainer.style.display="none";
-      }
-    })
+     mixer = new AnimationMixer(loadedmodel);     
   let light=document.getElementById("light")
   light.addEventListener("click",function(e){
     if(e.target.checked){
