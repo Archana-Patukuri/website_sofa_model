@@ -78,8 +78,8 @@ class World {
     container.append(renderer.domElement);
     //Orbit Controlls for Camera
     cameraControls = createCameraControls(camera, renderer.domElement);
-    // camera.position.set(-3.1,2.165,5.53);      
-    camera.position.set(-4.1,2.165,3.53);
+    camera.position.set(-3.1,2.165,5.53);      
+    // camera.position.set(-4.1,2.165,3.53);
     camera.updateMatrixWorld();
     camera.name="PerspectiveCamera"    
      basicControls(scene,camera,cameraControls,renderer);                      
@@ -97,7 +97,7 @@ class World {
     let loadedmodel = gltfData.scene;             
     scene.add(loadedmodel)          
     let Point_Light=scene.getObjectByName("Point_Light");
-    Point_Light.intensity=10; 
+    Point_Light.intensity=7; 
     Point_Light.castShadow=true;     
     Point_Light.shadow.mapSize.width = 2048; 
     Point_Light.shadow.mapSize.height = 2048;         
@@ -107,8 +107,8 @@ class World {
   let light=document.getElementById("light")
   light.addEventListener("click",function(e){
     if(e.target.checked){
-      Point_Light.intensity=10; 
-      renderer.toneMappingExposure = 1;      
+      Point_Light.intensity=7; 
+      renderer.toneMappingExposure = 0.8;      
     }else{
       renderer.toneMappingExposure = 0.1;      
       Point_Light.intensity=0; 
@@ -176,7 +176,7 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
     groundMirror.rotation.x = - Math.PI / 2;  
     groundMirror.position.z=0.225;
     groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.51;  
+    groundMirror.position.x=0.515;  
     Floor.material.opacity=0.7;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );   
@@ -188,17 +188,11 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
     //SHADOWS  
     scene.traverse(function (child) {              
       if (child.isMesh ) {                          
-        if( child.name=="Plane_1"){          
+        if( child.name=="Plane_1" || child.name=="Plane"){          
           child.receiveShadow = true;                  
         }else{          
         child.castShadow = true;                  
-        } 
-        if(child.name=="Plane" ){
-          child.receiveShadow=false
-        }
-            if(child.name=="Mesh0080_3"){
-              child.castShadow=false
-            }                                        
+        }                                    
       }          
   }) 
 
