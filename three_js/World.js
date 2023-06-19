@@ -177,7 +177,7 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
     groundMirror.position.z=0.225;
     groundMirror.position.y=-0.01;            
     groundMirror.position.x=0.515;  
-    Floor.material.opacity=0.7;             
+    Floor.material.opacity=0.5;             
     Floor.material.transparent=true;                
     scene.add( groundMirror );   
   
