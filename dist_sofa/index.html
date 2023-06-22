@@ -18,22 +18,23 @@
   <div class="container-fluid vh-100">   
     <div class="row d-flex">
       <div class="col-lg-12 p-0 position-relative" id="UIcontainer">       
-        <div id="controlsContainer">
-        <div class="Light d-flex">
-          <label for="light" class="light">Light</label>
+        <div id="controlsContainer" class="m-1">
+        <div class="Light d-flex">          
           <input type="checkbox" id="light" checked name="light" value="light">          
+          <label for="light" style="margin-left: 105px;" class="light">Light Switch</label>
         </div>
-        <div class="animations">
-          <label style="margin-right: 20px;">Sofa recline</label>
+        <div class="animations">          
           <input type="checkbox" id="animation" name="light" value="light">             
+          <label style="margin-left: 100px;">Sofa recline</label>
         </div>
         <div class="materialVariants d-flex" >
-          <label >Sofa colour</label>
-          <div style="margin-left: 24px;">
+          
+          <div >
           <button id="buttonRed" class="button m-0" value="0"></button>
           <button id="buttonGreen" class="button" value="1"></button>
           <button id="buttonBlue" class="button" value="2"></button>
         </div>
+        <label style="margin-left: 20px;">Sofa colour</label>
       </div>
         </div>
       </div>
