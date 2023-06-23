@@ -136,8 +136,7 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
     Point_Light.shadow.mapSize.width = 2048; 
     Point_Light.shadow.mapSize.height = 2048;         
     Point_Light.shadow.camera.near = 0.01; 
-    Point_Light.shadow.camera.far = 1000;
-     mixer = new AnimationMixer(loadedmodel);  
+    Point_Light.shadow.camera.far = 1000;    
      //LIGHT   
   let light=document.getElementById("light")
   light.addEventListener("click",function(e){
@@ -184,10 +183,10 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
   }
   async loadSofa() {            
     const { gltfData } = await gltfLoad(assets.Room[3].URL,renderer);
-    const loadedmodel = gltfData.scene;
+    const loadedmodel = gltfData.scene;    
     const sofa = loadedmodel;
     scene.add(sofa); 
-     
+    mixer = new AnimationMixer(loadedmodel);       
   //ANIMATION
   let animation=document.getElementById("animation");
   animation.addEventListener("click",function(e){
