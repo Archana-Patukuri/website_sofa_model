@@ -7,21 +7,11 @@ body {
   overflow: hidden;  
   font-size: 12px;
   font-family: Sans-Serif;  
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
 } 
 #scene-container {
-  height: 100vh;
-   /* width: 80vw;     */
-  /* z-index:-1;   */
+  height: 100vh;  
 }
-/* #UIcontainer{
-  margin-left: 100px;  
- height: 40vh;
-}
-#sceneContainer{
-   width: 80vw;  
-   padding-left: -200px; 
-} */
 #ar-prompt {
   position: absolute;
   left: 60%;
@@ -38,17 +28,10 @@ body {
   animation: circle 4s linear infinite;
 }
 #controlsContainer{
-  width: 40vw;
-  /* padding: 20px; */
-  /* margin-left: 70vw;   */
-  /* margin-left: 1vw;  */
-  /* display: none; */
+  width: 40vw; 
 }
 #controls-label{
-  width: 20vw;  
-  /* margin: 10px;    */
-  /* margin-left: 68vw;   */
-  /* margin-left: 1vw;  */
+  width: 20vw;   
   font-weight: bold;  
 }
 .control{
@@ -60,8 +43,7 @@ body {
 @media (max-width:500px) {
   #ar-prompt {    
     left: 100%;
-    top:50%;
-   
+    top:50%;   
   }
   #controlsContainer{
     width: 70vw;    
@@ -75,8 +57,7 @@ body {
     margin-right: 61.5px;
   }
   #UIcontainer{
-    margin-left: 0px; 
-    
+    margin-left: 0px;     
    }
    #sceneContainer{
      width: 100vw; 

@@ -2,9 +2,12 @@ import { World } from "./three_js/World.js";
 
 async function main() {  
   const world = new World();
-  await Promise.all([
-    await world.loadBackground(), 
-    await world.loadGLTF(),    
+  world.loadBackground();
+  await Promise.all([    
+    //await world.loadRoomGLTF(),    
+    await world.loadRoom(),    
+    await world.loadLamp(),    
+    await world.loadSofa(),    
   ]);  
   world.createPostProcess(),  
   world.start();

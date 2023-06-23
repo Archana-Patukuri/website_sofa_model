@@ -19,29 +19,30 @@
         <div id="controlsContainer" class="m-1">
         <div class="Light d-flex">          
           <input type="checkbox" id="light" checked name="light" value="light">          
-          <label for="light" style="margin-left: 105px;" class="light">Light Switch</label>
+          <label for="light" style="margin-left: 5px;" class="light">Light Switch</label>
         </div>
         <div class="animations">          
           <input type="checkbox" id="animation" name="light" value="light">             
-          <label style="margin-left: 100px;">Sofa recline</label>
+          <label style="margin-left: 1px;">Sofa recline</label>
         </div>
-        <div class="materialVariants d-flex" >
-          
+        <div class="materialVariants d-flex flex-column" >
+          <label>Sofa colour</label>
           <div >
           <button id="buttonRed" class="button m-0" value="0"></button>
           <button id="buttonGreen" class="button" value="1"></button>
           <button id="buttonBlue" class="button" value="2"></button>
         </div>
-        <label style="margin-left: 20px;">Sofa colour</label>
+        
       </div>
         </div>
       </div>
+      
       <!-- 3D Scene Container -->
     <div class="col-lg-12 p-0 position-relative links" id="sceneContainer">       
             
       <div id="scene-container"></div>               
-    <div id="loadingSpinner" class="position-absolute top-50 start-50 translate-middle" style="color:#f79d96"><strong>Loading...</strong>
-        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>        
+      <div id="loadingSpinner" class="position-absolute top-50 start-50 translate-middle" style="color:#f79d96"><strong>Loading...</strong>
+          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>        
       </div>                
       <div id="ar-prompt">
         <img src="prompt/hand.svg">

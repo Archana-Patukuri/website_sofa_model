@@ -78,8 +78,7 @@ class World {
     container.append(renderer.domElement);
     //Orbit Controlls for Camera
     cameraControls = createCameraControls(camera, renderer.domElement);
-    camera.position.set(-3.1,2.165,5.53);      
-    // camera.position.set(-4.1,2.165,3.53);
+    camera.position.set(-3.1,2.165,5.53);          
     camera.updateMatrixWorld();
     camera.name="PerspectiveCamera"    
      basicControls(scene,camera,cameraControls,renderer);                      
@@ -89,13 +88,48 @@ class World {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
     scene.environment = hdri0;          
     //  scene.background = new THREE.Color(251,251,251);         
-    scene.background=background0;
+    // scene.background=background0;
   } 
   //LoadRoom
-  async loadGLTF() {     
+   async loadRoomGLTF() {     
     let { gltfData } = await gltfLoad(assets.Room[0].URL,renderer);
     let loadedmodel = gltfData.scene;             
-    scene.add(loadedmodel)          
+    scene.add(loadedmodel)  
+    console.log(scene)        
+  
+
+
+ renderer.render(scene, camera);           
+  }  
+  async loadRoom() {            
+    const { gltfData } = await gltfLoad(assets.Room[1].URL,renderer);
+    const loadedmodel = gltfData.scene;
+    const room = loadedmodel;   
+    scene.add(room);  
+    
+//REFLECTIONS
+let Floor=scene.getObjectByName("Plane_1")
+let geometry = new THREE.PlaneGeometry( 3.01, 3.06);   
+  let groundMirror = new Reflector( geometry, {
+    clipBias: 0.003,
+    textureWidth: window.innerWidth * window.devicePixelRatio,
+    textureHeight: window.innerHeight * window.devicePixelRatio,
+    color: 0x888888,   
+    } );             
+    groundMirror.rotation.x = - Math.PI / 2;  
+    groundMirror.position.z=0.225;
+    groundMirror.position.y=-0.01;            
+    groundMirror.position.x=0.515;  
+    Floor.material.opacity=0.5;             
+    Floor.material.transparent=true;                
+    scene.add( groundMirror );   
+    console.log("room loaded",room) 
+  }
+  async loadLamp() {            
+    const { gltfData } = await gltfLoad(assets.Room[2].URL,renderer);
+    const loadedmodel = gltfData.scene;
+    const lamp = loadedmodel;
+    scene.add(lamp);
     let Point_Light=scene.getObjectByName("Point_Light");
     Point_Light.intensity=7; 
     Point_Light.castShadow=true;     
@@ -103,7 +137,8 @@ class World {
     Point_Light.shadow.mapSize.height = 2048;         
     Point_Light.shadow.camera.near = 0.01; 
     Point_Light.shadow.camera.far = 1000;
-     mixer = new AnimationMixer(loadedmodel);     
+     mixer = new AnimationMixer(loadedmodel);  
+     //LIGHT   
   let light=document.getElementById("light")
   light.addEventListener("click",function(e){
     if(e.target.checked){
@@ -114,24 +149,7 @@ class World {
       Point_Light.intensity=0; 
     }   
   })
-  let animation=document.getElementById("animation");
-  animation.addEventListener("click",function(e){
-    if(e.target.checked){
-      animationClips[0] = mixer.clipAction(gltfData.animations[0]);
-      animationClips[0].setLoop(LoopOnce);    
-      animationClips[0].clampWhenFinished = true;            
-      animationClips[0].play(); 
-    }else{
-      mixer.stopAllAction();
-    }
-  })
-  let button=document.querySelectorAll(".button") 
-  for(let i=0;i<3;i++){
-    button[i].addEventListener("click",function(){   
-      gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );                  
-  })
-  }        
- //SSS(Sub surface scattering effect)
+   //SSS(Sub surface scattering effect)
  if(Point_Light.intensity>0){    
   let LampTop = scene.getObjectByName("Lamp_Cover");
   let texLoader = new TextureLoader();
@@ -162,53 +180,59 @@ class World {
 
    LampTop.material = subMaterial;      
 }
+    console.log("lamp loaded")   
+  }
+  async loadSofa() {            
+    const { gltfData } = await gltfLoad(assets.Room[3].URL,renderer);
+    const loadedmodel = gltfData.scene;
+    const sofa = loadedmodel;
+    scene.add(sofa); 
+     
+  //ANIMATION
+  let animation=document.getElementById("animation");
+  animation.addEventListener("click",function(e){
+    if(e.target.checked){
+      animationClips[0] = mixer.clipAction(gltfData.animations[0]);
+      animationClips[0].setLoop(LoopOnce);    
+      animationClips[0].clampWhenFinished = true;            
+      animationClips[0].play(); 
+    }else{
+      mixer.stopAllAction();
+    }
+  })
+  //VARIANTS
+  let button=document.querySelectorAll(".button") 
+  for(let i=0;i<3;i++){
+    button[i].addEventListener("click",function(){   
+      gltfData.functions.selectVariant(gltfData.scene,gltfData.userData.variants[i] );                  
+  })
+  }        
 
-let Floor=scene.getObjectByName("Plane_1")
-let geometry = new THREE.PlaneGeometry( 3.01, 3.06);  
-
- //MIRROR
-  let groundMirror = new Reflector( geometry, {
-    clipBias: 0.003,
-    textureWidth: window.innerWidth * window.devicePixelRatio,
-    textureHeight: window.innerHeight * window.devicePixelRatio,
-    color: 0x888888,   
-    } );             
-    groundMirror.rotation.x = - Math.PI / 2;  
-    groundMirror.position.z=0.225;
-    groundMirror.position.y=-0.01;            
-    groundMirror.position.x=0.515;  
-    Floor.material.opacity=0.5;             
-    Floor.material.transparent=true;                
-    scene.add( groundMirror );   
-  
- renderer.render(scene, camera);           
-  }    
+  //SHADOWS  
+  scene.traverse(function (child) {              
+    if (child.isMesh ) {                          
+      if( child.name=="Plane_1" || child.name=="Plane"){          
+        child.receiveShadow = true;                  
+      }else{          
+      child.castShadow = true;                  
+      }                                    
+    }          
+}) 
+    console.log("sofa loaded")  
+  }
 //CreatePostProcess Effects
-  createPostProcess() { 
-    //SHADOWS  
-    scene.traverse(function (child) {              
-      if (child.isMesh ) {                          
-        if( child.name=="Plane_1" || child.name=="Plane"){          
-          child.receiveShadow = true;                  
-        }else{          
-        child.castShadow = true;                  
-        }                                    
-      }          
-  }) 
-
-    const renderPass = new RenderPass(scene, camera); 
-    // renderPass.enabled = false;       
+  createPostProcess() {   
+    const renderPass = new RenderPass(scene, camera);           
     composer.addPass(renderPass);     
     
     const taaRenderPass = new TAARenderPass(scene, camera);
     taaRenderPass.unbiased = true;
     taaRenderPass.sampleLevel = 1;        
     composer.addPass(taaRenderPass);  
-    const copyPass2 = new ShaderPass(GammaCorrectionShader);    
-    composer.addPass(copyPass2); 
-       
-   
 
+    const copyPass2 = new ShaderPass(GammaCorrectionShader);    
+    composer.addPass(copyPass2);
+    console.log("postprocessing completed")           
   }
  
 
