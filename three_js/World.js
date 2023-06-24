@@ -88,7 +88,11 @@ class World {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
     scene.environment = hdri0;          
     //  scene.background = new THREE.Color(251,251,251);         
-    // scene.background=background0;
+     scene.background=background0;
+   /*  ambientLightSun = new AmbientLight();
+    ambientLightSun.color = new Color(0xffffff);
+     ambientLightSun.intensity = 1;
+    scene.add(ambientLightSun); */
   } 
   //LoadRoom
    async loadRoomGLTF() {     
