@@ -86,13 +86,8 @@ class World {
   }
   async loadBackground() {
     const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
-    scene.environment = hdri0;          
-    //  scene.background = new THREE.Color(251,251,251);         
-     scene.background=background0;
-   /*  ambientLightSun = new AmbientLight();
-    ambientLightSun.color = new Color(0xffffff);
-     ambientLightSun.intensity = 1;
-    scene.add(ambientLightSun); */
+    scene.environment = hdri0;                     
+     scene.background=background0;  
   } 
   //LoadRoom
    async loadRoomGLTF() {     
@@ -100,10 +95,7 @@ class World {
     let loadedmodel = gltfData.scene;             
     scene.add(loadedmodel)  
     console.log(scene)        
-  
-
-
- renderer.render(scene, camera);           
+    renderer.render(scene, camera);           
   }  
   async loadRoom() {            
     const { gltfData } = await gltfLoad(assets.Room[1].URL,renderer);
@@ -126,8 +118,10 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
     groundMirror.position.x=0.515;  
     Floor.material.opacity=0.5;             
     Floor.material.transparent=true;                
-    scene.add( groundMirror );   
+    scene.add( groundMirror );  
+    renderer.render(scene, camera);       
     console.log("room loaded",room) 
+ 
   }
   async loadLamp() {            
     const { gltfData } = await gltfLoad(assets.Room[2].URL,renderer);
@@ -183,6 +177,7 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
 
    LampTop.material = subMaterial;      
 }
+    renderer.render(scene, camera);   
     console.log("lamp loaded")   
   }
   async loadSofa() {            
@@ -221,6 +216,7 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
       }                                    
     }          
 }) 
+renderer.render(scene, camera);   
     console.log("sofa loaded")  
   }
 //CreatePostProcess Effects
