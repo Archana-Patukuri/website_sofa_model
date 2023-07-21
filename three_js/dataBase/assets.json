@@ -1,9 +1,5 @@
 {
-  "Room": [
-    {
-      "URL": "models/RoomForWebsite(Jpeg)_New.glb",
-      "Name": "sofa"
-    },
+  "Room": [    
     {
       "URL": "models/sofa_room.glb",
       "Name": "sofa"

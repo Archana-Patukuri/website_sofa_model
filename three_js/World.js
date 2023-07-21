@@ -4,11 +4,8 @@ import { createCameraControls } from "./systems/cameraControls.js";
 import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { basicControls } from "./systems/basicControls.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { gltfLoad } from "./components/gltf_loader/gltfLoad.js";
 import { hdriLoad } from "./components/hdri_loader/hdri_loader.js";
-import { Debug } from "./systems/Debug.js";
-// import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
 import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 import {
   Clock,
@@ -27,23 +24,16 @@ import { GammaCorrectionShader } from '../node_modules/three/examples/jsm/shader
 import { RenderPass } from '../node_modules/three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from '../node_modules/three/examples/jsm/postprocessing/ShaderPass.js';
 import { SubsurfaceScatteringShader } from "three/examples/jsm/shaders/SubsurfaceScatteringShader.js";
-import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
-import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
 import assets from "./dataBase/assets.json" assert { type: "json" };
 import { TAARenderPass } from '../node_modules/three/examples/jsm/postprocessing/TAARenderPass.js';
-import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
 const container = document.querySelector("#scene-container");
-
 let camera;
 let renderer;
 let scene;
 let cameraControls;
-let debug;
 let clock;
 let composer;
-let ambientLightSun;
 
-let delta,gui;
 let animationClips = [],mixer;
 let prompt=document.getElementById("ar-prompt");
 let groundReflector,ssrPass,geometry,selects         
@@ -70,8 +60,7 @@ class World {
       prompt.style.display="none";
     }); 
     
-    clock = new Clock();  
-    debug = new Debug();
+    clock = new Clock();      
 
     //WINDOW RESIZER
     const resizer = new Resizer(container, camera, renderer, composer,groundReflector);
@@ -85,20 +74,13 @@ class World {
  
   }
   async loadBackground() {
-    const { background0,background1,hdri0, hdri1 } = await hdriLoad();    
+    const { background0,hdri0 } = await hdriLoad();    
     scene.environment = hdri0;                     
      scene.background=background0;  
-  } 
-  //LoadRoom
-   async loadRoomGLTF() {     
-    let { gltfData } = await gltfLoad(assets.Room[0].URL,renderer);
-    let loadedmodel = gltfData.scene;             
-    scene.add(loadedmodel)  
-    console.log(scene)        
-    renderer.render(scene, camera);           
-  }  
+  }         
+   
   async loadRoom() {            
-    const { gltfData } = await gltfLoad(assets.Room[1].URL,renderer);
+    const { gltfData } = await gltfLoad(assets.Room[0].URL,renderer);
     const loadedmodel = gltfData.scene;
     const room = loadedmodel;   
     scene.add(room);  
@@ -124,7 +106,7 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
  
   }
   async loadLamp() {            
-    const { gltfData } = await gltfLoad(assets.Room[2].URL,renderer);
+    const { gltfData } = await gltfLoad(assets.Room[1].URL,renderer);
     const loadedmodel = gltfData.scene;
     const lamp = loadedmodel;
     scene.add(lamp);
@@ -181,7 +163,7 @@ let geometry = new THREE.PlaneGeometry( 3.01, 3.06);
     console.log("lamp loaded")   
   }
   async loadSofa() {            
-    const { gltfData } = await gltfLoad(assets.Room[3].URL,renderer);
+    const { gltfData } = await gltfLoad(assets.Room[2].URL,renderer);
     const loadedmodel = gltfData.scene;    
     const sofa = loadedmodel;
     scene.add(sofa); 
@@ -243,18 +225,14 @@ renderer.render(scene, camera);
       camera.updateMatrixWorld()                     
 
       const delta = clock.getDelta();       
-     if(mixer) mixer.update(delta)
-      //DEBUG      
-      debug.update(renderer);                          
+     if(mixer) mixer.update(delta)                                          
     });  
        
     //Spinner Remove after starting to render the scene
     let loadingSpinner = document.getElementById("loadingSpinner");   
     loadingSpinner.remove();  
     prompt.style.display="block";               
-    renderer.render(scene, camera);
-    //DEBUG
-    debug.displayStats();         
+    renderer.render(scene, camera);                 
   }
   
 }
